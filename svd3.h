@@ -33,7 +33,7 @@ http://www.lomont.org/Math/Papers/2003/InvSqrt.pdf
 http://playstation2-linux.com/download/p2lsd/fastrsqrt.pdf
 http://www.beyond3d.com/content/articles/8/
 */
-float rsqrt(float x) {
+inline float rsqrt(float x) {
 // int ihalf = *(int *)&x - 0x00800000; // Alternative to next line,
 // float xhalf = *(float *)&ihalf;      // for sufficiently large nos.
    float xhalf = 0.5f*x;
@@ -50,7 +50,7 @@ float rsqrt(float x) {
 increased accuracy. The constant 0x5f37599e makes the relative error
 range from 0 to -0.00000463.
    You can't balance the error by adjusting the constant. */
-float rsqrt1(float x) {
+inline float rsqrt1(float x) {
    float xhalf = 0.5f*x;
    int i = *(int *)&x;          // View x as an int.
    i = 0x5f37599e - (i >> 1);   // Initial guess.
@@ -60,7 +60,7 @@ float rsqrt1(float x) {
    return x;
 }
 
-float accurateSqrt(float x)
+inline float accurateSqrt(float x)
 {
     return x * rsqrt1(x);
 }
@@ -73,7 +73,7 @@ inline void condSwap(bool c, float &X, float &Y)
     Y = c ? Z : Y;
 }
 
-void condNegSwap(bool c, float &X, float &Y)
+inline void condNegSwap(bool c, float &X, float &Y)
 {
     // used in step 2 and 3
     float Z = -X;
@@ -82,7 +82,7 @@ void condNegSwap(bool c, float &X, float &Y)
 }
 
 // matrix multiplication M = A * B
-void multAB(float a11, float a12, float a13,
+inline void multAB(float a11, float a12, float a13,
           float a21, float a22, float a23,
           float a31, float a32, float a33,
           //
@@ -101,7 +101,7 @@ void multAB(float a11, float a12, float a13,
 }
 
 // matrix multiplication M = Transpose[A] * B
-void multAtB(float a11, float a12, float a13,
+inline void multAtB(float a11, float a12, float a13,
           float a21, float a22, float a23,
           float a31, float a32, float a33,
           //
@@ -118,7 +118,7 @@ void multAtB(float a11, float a12, float a13,
   m31=a13*b11 + a23*b21 + a33*b31; m32=a13*b12 + a23*b22 + a33*b32; m33=a13*b13 + a23*b23 + a33*b33;
 }
 
-void quatToMat3(const float * qV,
+inline void quatToMat3(const float * qV,
 float &m11, float &m12, float &m13,
 float &m21, float &m22, float &m23,
 float &m31, float &m32, float &m33
@@ -139,12 +139,12 @@ float &m31, float &m32, float &m33
 	float qwy = w*y;
 	float qwz = w*z;
 
-	m11=1 - 2*(qyy + qzz); m12=2*(qxy - qwz); m13=2*(qxz + qwy);
+	 m11=1 - 2*(qyy + qzz); m12=2*(qxy - qwz); m13=2*(qxz + qwy);
     m21=2*(qxy + qwz); m22=1 - 2*(qxx + qzz); m23=2*(qyz - qwx);
     m31=2*(qxz - qwy); m32=2*(qyz + qwx); m33=1 - 2*(qxx + qyy);
 }
 
-void approximateGivensQuaternion(float a11, float a12, float a22, float &ch, float &sh)
+inline void approximateGivensQuaternion(float a11, float a12, float a22, float &ch, float &sh)
 {
 /*
      * Given givens angle computed by approximateGivensAngles,
@@ -161,7 +161,7 @@ void approximateGivensQuaternion(float a11, float a12, float a22, float &ch, flo
     sh=b?w*sh:_sstar;
 }
 
-void jacobiConjugation( const int x, const int y, const int z,
+inline void jacobiConjugation( const int x, const int y, const int z,
                         float &s11,
                         float &s21, float &s22,
                         float &s31, float &s32, float &s33,
