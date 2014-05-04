@@ -35,13 +35,19 @@ int main(void)
     float v11, v12, v13, v21, v22, v23, v31, v32, v33;
 
 
-    const clock_t begin_time = clock();
-    svd(a11, a12, a13, a21, a22, a23, a31, a32, a33,
+    clock_t start, end;
+    start = clock();
+    for (int i=0; i<1e5; i++)
+    {
+        svd(a11, a12, a13, a21, a22, a23, a31, a32, a33,
         u11, u12, u13, u21, u22, u23, u31, u32, u33,
         s11, s12, s13, s21, s22, s23, s31, s32, s33,
         v11, v12, v13, v21, v22, v23, v31, v32, v33);
-    printf("execution time : %f ms \n", float(clock()-begin_time)/float(CLOCKS_PER_SEC));
+    }    
+    end = clock();
 
+    printf("Average SVD takes %f microseconds \n ", 1e6*(double(end - start) / 1e5 / CLOCKS_PER_SEC ) );
+    
     printf("U:\n");
     printMat3(u11, u12, u13, u21, u22, u23, u31, u32, u33);
     printf("S:\n");
