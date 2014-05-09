@@ -26,46 +26,13 @@
 #include <cuda.h>
 #include "math.h" // CUDA math library
 
-/* This is a novel and fast routine for the reciprocal square root of an
-IEEE float (single precision).
 
-http://www.lomont.org/Math/Papers/2003/InvSqrt.pdf
-http://playstation2-linux.com/download/p2lsd/fastrsqrt.pdf
-http://www.beyond3d.com/content/articles/8/
-*/
-__host__ __device__ __forceinline__
-float rsqrt(float x) {
-// int ihalf = *(int *)&x - 0x00800000; // Alternative to next line,
-// float xhalf = *(float *)&ihalf;      // for sufficiently large nos.
-   float xhalf = 0.5f*x;
-   int i = *(int *)&x;          // View x as an int.
-// i = 0x5f3759df - (i >> 1);   // Initial guess (traditional).
-   i = 0x5f375a82 - (i >> 1);   // Initial guess (slightly better).
-   x = *(float *)&i;            // View i as float.
-   x = x*(1.5f - xhalf*x*x);    // Newton step.
-// x = x*(1.5008908 - xhalf*x*x);  // Newton step for a balanced error.
-   return x;
-}
-
-/* This is rsqrt with an additional step of the Newton iteration, for
-increased accuracy. The constant 0x5f37599e makes the relative error
-range from 0 to -0.00000463.
-   You can't balance the error by adjusting the constant. */
-__host__ __device__ __forceinline__
-float rsqrt1(float x) {
-   float xhalf = 0.5f*x;
-   int i = *(int *)&x;          // View x as an int.
-   i = 0x5f37599e - (i >> 1);   // Initial guess.
-   x = *(float *)&i;            // View i as float.
-   x = x*(1.5f - xhalf*x*x);    // Newton step.
-   x = x*(1.5f - xhalf*x*x);    // Newton step again.
-   return x;
-}
+// CUDA's rsqrt seems to be faster than the inlined approximation?
 
 __host__ __device__ __forceinline__
 float accurateSqrt(float x)
 {
-    return x * rsqrt1(x);
+    return x * rsqrt(x);
 }
 
 __host__ __device__ __forceinline__
@@ -162,9 +129,6 @@ void approximateGivensQuaternion(float a11, float a12, float a22, float &ch, flo
     ch = 2*(a11-a22);
     sh = a12;
     bool b = _gamma*sh*sh < ch*ch;
-    // fast rsqrt function suffices
-    // rsqrt2 (https://code.google.com/p/lppython/source/browse/algorithm/HDcode/newCode/rsqrt.c?r=26)
-    // is even faster but results in too much error
     float w = rsqrt(ch*ch+sh*sh);
     ch=b?w*ch:_cstar;
     sh=b?w*sh:_sstar;

@@ -3,7 +3,9 @@ Fast 3x3 SVD
 
 This is an implementation of the method described in <a href="http://pages.cs.wisc.edu/~sifakis/papers/SVD_TR1690.pdf">"Computing the Singular Value Decomposition of 3x3 matrices with minimal branching and elementary floating point operations"</a>. I implemented this as part of <a href="http://wyegelwel.github.io/snow/">a group project</a> for a computer graphics course. 
 
-Exeution time per svd call is about 2 microseconds on a AMD Phenom(tm) II X4 965 Processor.
+Execution time per svd call on the CPU is about 2.0 microseconds. Tested on a AMD Phenom(tm) II X4 965 Processor. 
+
+Execution time on the GPU is about 174 microseconds. Tested on a NVIDIA GeForce GTX 460 (profiled using nvvp).
 
 Also included are routines for diagonalization / QR decomposition of 3x3 matrices, which may be useful in their own right. 
 

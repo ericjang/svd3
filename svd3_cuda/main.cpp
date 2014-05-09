@@ -1,11 +1,11 @@
 #include <iostream>
+#include <stdio.h>
 
-extern "C" void svd3_test();
-
+extern "C" void runCudaPart();
 
 int main()
 {
-
+    runCudaPart();
     return 0;
 }
 

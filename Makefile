@@ -12,14 +12,10 @@ ifeq ($(OS), Darwin) # Mac OSX
 	CFLAGS=
 endif
 
-default: svd3_cpu
+default: cpu
 
 cpu: main_cpu.cpp
 	$(CC) $(CFLAGS) main_cpu.cpp -o svd3_cpu
-
-cuda: main_cuda.cpp
-	# TODO
-	$(CC) $(CFLAGS) main_gpu.cpp -o svd3_cuda
 
 GLM_INCL = /Developer/glm
 
