@@ -4,8 +4,8 @@
 **
 ** Quick singular value decomposition as described by: 
 ** A. McAdams, A. Selle, R. Tamstorf, J. Teran and E. Sifakis, 
-** “Computing the Singular Value Decomposition of 3x3 matrices 
-** with minimal branching and elementary floating point operations”,
+** "Computing the Singular Value Decomposition of 3x3 matrices 
+** with minimal branching and elementary floating point operations",
 **  University of Wisconsin - Madison technical report TR1690, May 2011
 **  
 **	OPTIMIZED CPU VERSION
@@ -157,8 +157,8 @@ inline void approximateGivensQuaternion(float a11, float a12, float a22, float &
     // rsqrt2 (https://code.google.com/p/lppython/source/browse/algorithm/HDcode/newCode/rsqrt.c?r=26)
     // is even faster but results in too much error
     float w = rsqrt(ch*ch+sh*sh);
-    ch=b?w*ch:_cstar;
-    sh=b?w*sh:_sstar;
+    ch=b?w*ch:(float)_cstar;
+    sh=b?w*sh: (float)_sstar;
 }
 
 inline void jacobiConjugation( const int x, const int y, const int z,
@@ -275,11 +275,11 @@ void QRGivensQuaternion(float a1, float a2, float &ch, float &sh)
 {
     // a1 = pivot point on diagonal
     // a2 = lower triangular entry we want to annihilate
-    float epsilon = EPSILON;
+    float epsilon = (float)EPSILON;
     float rho = accurateSqrt(a1*a1 + a2*a2);
 
     sh = rho > epsilon ? a2 : 0;
-    ch = fabs(a1) + fmax(rho,epsilon);
+    ch = fabsf(a1) + fmaxf(rho,epsilon);
     bool b = a1 < 0;
     condSwap(b,sh,ch);
     float w = rsqrt(ch*ch+sh*sh);
