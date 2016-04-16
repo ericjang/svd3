@@ -158,7 +158,7 @@ inline void approximateGivensQuaternion(float a11, float a12, float a22, float &
     // is even faster but results in too much error
     float w = rsqrt(ch*ch+sh*sh);
     ch=b?w*ch:(float)_cstar;
-    sh=b?w*sh: (float)_sstar;
+    sh=b?w*sh:(float)_sstar;
 }
 
 inline void jacobiConjugation( const int x, const int y, const int z,
