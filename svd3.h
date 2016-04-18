@@ -24,7 +24,7 @@
 #define _sstar 0.3826834323 // sin(p/8)
 #define EPSILON 1e-6
 
-#include "math.h"
+#include <math.h>
 
 /* This is a novel and fast routine for the reciprocal square root of an
 IEEE float (single precision).
