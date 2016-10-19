@@ -251,7 +251,7 @@ inline void sortSingularValues(// matrix that we want to decompose
                             float &v31, float &v32, float &v33)
 {
     float rho1 = dist2(b11,b21,b31);
-    float rho2 = dist2(b12,b22,b23);
+    float rho2 = dist2(b12,b22,b32);
     float rho3 = dist2(b13,b23,b33);
 	bool c;
     c = rho1 < rho2;
